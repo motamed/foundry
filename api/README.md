@@ -10,9 +10,10 @@ The API supports fetching models from a URL or a local file, and provides severa
     ```sh
     pip install -r requirements.txt
     ```
-3. Create a `.env` file in the root directory and add the following variables:
+3. Create a `.env` file in the root directory of the api folder and add the following variables:
     ```properties
     MODELS_FILE_URL=<URL_to_JSON_file>
+    # OR
     MODELS_FILE_PATH=./../json/full.json
     ```
 
