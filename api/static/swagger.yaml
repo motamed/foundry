@@ -1,0 +1,140 @@
+openapi: 3.0.0
+info:
+  title: Foundry API
+  version: 1.0.0
+  description: API for fetching and searching models
+servers:
+  - url: http://127.0.0.1:5000
+paths:
+  /:
+    get:
+      summary: Redirect to Swagger UI
+      responses:
+        '302':
+          description: Redirect to Swagger UI
+  /models:
+    get:
+      summary: Get all models
+      responses:
+        '200':
+          description: A list of models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Model'
+        '404':
+          description: Unable to fetch models from URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /model:
+    get:
+      summary: Get a model by id or name
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The ID of the model
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: The name of the model
+      responses:
+        '200':
+          description: A model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+        '400':
+          description: Model ID or Name required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Model not found or unable to fetch models from URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /count:
+    get:
+      summary: Get the count of models
+      responses:
+        '200':
+          description: The count of models
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+        '404':
+          description: Unable to fetch models from URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /search:
+    get:
+      summary: Search models by name
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: The name to search for
+      responses:
+        '200':
+          description: A list of matching models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Model'
+        '404':
+          description: Unable to fetch models from URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Model:
+      type: object
+      properties:
+        caption:
+          type: string
+        details:
+          type: string
+        hasBenchmark:
+          type: boolean
+        icon:
+          type: string
+        id:
+          type: integer
+        link:
+          type: string
+        name:
+          type: string
+      required:
+        - caption
+        - details
+        - hasBenchmark
+        - icon
+        - id
+        - link
+        - name
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
